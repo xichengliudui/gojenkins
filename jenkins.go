@@ -17,6 +17,7 @@ package gojenkins
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -551,6 +552,34 @@ func (j *Jenkins) GetAllViews(ctx context.Context) ([]*View, error) {
 	return views, nil
 }
 
+func (j *Jenkins) UpdateView(ctx context.Context, viewName string, view View) (*View, error) {
+
+	endpoint := "/" + viewName
+	job, err := json.Marshal(view.Raw.Jobs)
+	if err != nil {
+		return nil, err
+	}
+	data := map[string]string{
+		"name":   view.Raw.Name,
+		"Submit": "OK",
+		"json": makeJson(map[string]string{
+			"name":        view.Raw.Name,
+			"description": view.GetDescription(),
+			"jobs":        string(job),
+		}),
+	}
+	r, err := j.Requester.Post(ctx, endpoint, nil, view.Raw, data)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if r.StatusCode == 200 {
+		return j.GetView(ctx, view.Raw.Name)
+	}
+	return nil, errors.New(strconv.Itoa(r.StatusCode))
+}
+
 // Create View
 // First Parameter - name of the View
 // Second parameter - Type
@@ -568,7 +597,6 @@ func (j *Jenkins) CreateView(ctx context.Context, name string, viewType JenkinsV
 		"name":   name,
 		"mode":   string(viewType),
 		"Submit": "OK",
-		//"description": description,
 		"json": makeJson(map[string]string{
 			"name":        name,
 			"mode":        string(viewType),
