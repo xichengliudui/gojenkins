@@ -58,6 +58,15 @@ func (v *View) AddJob(ctx context.Context, name string) (bool, error) {
 	return false, errors.New(strconv.Itoa(resp.StatusCode))
 }
 
+func (v *View) DeleteView(ctx context.Context, name string) (bool, error) {
+	url := "/doDelete"
+	resp, err := v.Jenkins.Requester.Post(ctx, v.Base+url, nil, nil, nil)
+	if err != nil {
+		return false, err
+	}
+	return resp.StatusCode == 200, nil
+}
+
 // Returns True if successfully deleted Job, otherwise false
 func (v *View) DeleteJob(ctx context.Context, name string) (bool, error) {
 	url := "/removeJobFromView"
