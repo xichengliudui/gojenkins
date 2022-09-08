@@ -560,8 +560,7 @@ func (j *Jenkins) UpdateView(ctx context.Context, viewName string, raw *ViewRequ
 		return nil, err
 	}
 	data := map[string]string{
-		"name":   raw.Name,
-		"Submit": "OK",
+		"name": raw.Name,
 		"json": makeJson(map[string]string{
 			"name":        raw.Name,
 			"description": raw.Description,
