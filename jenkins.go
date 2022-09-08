@@ -552,6 +552,12 @@ func (j *Jenkins) GetAllViews(ctx context.Context) ([]*View, error) {
 	return views, nil
 }
 
+func (j *Jenkins) UpdateViewXML(ctx context.Context, viewName string, config string) *View {
+	view := View{Jenkins: j, Raw: new(ViewResponse), Base: "/view/" + viewName}
+	view.UpdateConfig(ctx, config)
+	return &view
+}
+
 func (j *Jenkins) UpdateView(ctx context.Context, viewName string, raw *ViewRequest) (*View, error) {
 
 	endpoint := "/view/" + viewName

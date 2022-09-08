@@ -85,6 +85,21 @@ func (v *View) DeleteJob(ctx context.Context, name string) (bool, error) {
 	return false, errors.New(strconv.Itoa(resp.StatusCode))
 }
 
+func (v *View) UpdateConfig(ctx context.Context, config string) error {
+
+	var querystring map[string]string
+
+	resp, err := v.Jenkins.Requester.PostXML(ctx, v.Base+"/config.xml", config, nil, querystring)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode == 200 {
+		v.Poll(ctx)
+		return nil
+	}
+	return errors.New(strconv.Itoa(resp.StatusCode))
+}
+
 func (v *View) GetDescription() string {
 	return v.Raw.Description
 }
