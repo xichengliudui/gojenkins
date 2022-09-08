@@ -552,7 +552,7 @@ func (j *Jenkins) GetAllViews(ctx context.Context) ([]*View, error) {
 	return views, nil
 }
 
-func (j *Jenkins) UpdateView(ctx context.Context, viewName string, raw ViewRequest) (*View, error) {
+func (j *Jenkins) UpdateView(ctx context.Context, viewName string, raw *ViewRequest) (*View, error) {
 
 	endpoint := "/" + viewName
 	job, err := json.Marshal(raw.Jobs)
