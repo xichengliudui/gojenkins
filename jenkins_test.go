@@ -132,13 +132,13 @@ func TestCreateViews(t *testing.T) {
 		return
 	}
 	ctx := context.Background()
-	list_view, err := jenkins.CreateView(ctx, "test_list_view", LIST_VIEW)
+	list_view, err := jenkins.CreateView(ctx, "test_list_view", LIST_VIEW, "test pipeline")
 	assert.Nil(t, err)
 	assert.Equal(t, "test_list_view", list_view.GetName())
 	assert.Equal(t, "", list_view.GetDescription())
 	assert.Equal(t, 0, len(list_view.GetJobs()))
 
-	my_view, err := jenkins.CreateView(ctx, "test_my_view", MY_VIEW)
+	my_view, err := jenkins.CreateView(ctx, "test_my_view", MY_VIEW, "test pipeline")
 	assert.Nil(t, err)
 	assert.Equal(t, "test_my_view", my_view.GetName())
 	assert.Equal(t, "", my_view.GetDescription())
