@@ -58,7 +58,7 @@ func (v *View) AddJob(ctx context.Context, name string) (bool, error) {
 	return false, errors.New(strconv.Itoa(resp.StatusCode))
 }
 
-func (v *View) DeleteView(ctx context.Context, name string) (bool, error) {
+func (v *View) DeleteView(ctx context.Context) (bool, error) {
 	url := "/doDelete"
 	resp, err := v.Jenkins.Requester.Post(ctx, v.Base+url, nil, nil, nil)
 	if err != nil {
