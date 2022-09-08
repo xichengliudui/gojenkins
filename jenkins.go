@@ -554,7 +554,7 @@ func (j *Jenkins) GetAllViews(ctx context.Context) ([]*View, error) {
 
 func (j *Jenkins) UpdateView(ctx context.Context, viewName string, raw *ViewRequest) (*View, error) {
 
-	endpoint := "/" + viewName
+	endpoint := "/view/" + viewName
 	job, err := json.Marshal(raw.Jobs)
 	if err != nil {
 		return nil, err
