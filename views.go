@@ -26,6 +26,10 @@ type View struct {
 	Base    string
 }
 
+type ViewRequest struct {
+	ViewResponse
+}
+
 type ViewResponse struct {
 	Description string        `json:"description"`
 	Jobs        []InnerJob    `json:"jobs"`

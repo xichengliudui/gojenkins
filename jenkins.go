@@ -552,30 +552,30 @@ func (j *Jenkins) GetAllViews(ctx context.Context) ([]*View, error) {
 	return views, nil
 }
 
-func (j *Jenkins) UpdateView(ctx context.Context, viewName string, view View) (*View, error) {
+func (j *Jenkins) UpdateView(ctx context.Context, viewName string, raw ViewRequest) (*View, error) {
 
 	endpoint := "/" + viewName
-	job, err := json.Marshal(view.Raw.Jobs)
+	job, err := json.Marshal(raw.Jobs)
 	if err != nil {
 		return nil, err
 	}
 	data := map[string]string{
-		"name":   view.Raw.Name,
+		"name":   raw.Name,
 		"Submit": "OK",
 		"json": makeJson(map[string]string{
-			"name":        view.Raw.Name,
-			"description": view.GetDescription(),
+			"name":        raw.Name,
+			"description": raw.Description,
 			"jobs":        string(job),
 		}),
 	}
-	r, err := j.Requester.Post(ctx, endpoint, nil, view.Raw, data)
+	r, err := j.Requester.Post(ctx, endpoint, nil, raw, data)
 
 	if err != nil {
 		return nil, err
 	}
 
 	if r.StatusCode == 200 {
-		return j.GetView(ctx, view.Raw.Name)
+		return j.GetView(ctx, raw.Name)
 	}
 	return nil, errors.New(strconv.Itoa(r.StatusCode))
 }
