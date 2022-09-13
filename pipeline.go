@@ -19,7 +19,6 @@ package gojenkins
 
 import (
 	"context"
-	"fmt"
 	"regexp"
 )
 
@@ -160,7 +159,6 @@ func (pr *PipelineRun) GetNode(ctx context.Context, id string) (node *PipelineNo
 func (node *PipelineNode) GetLog(ctx context.Context) (log *PipelineNodeLog, err error) {
 	log = new(PipelineNodeLog)
 	href := node.Base + "/wfapi/log"
-	fmt.Println(href)
 	_, err = node.Run.Job.Jenkins.Requester.GetJSON(ctx, href, log, nil)
 	if err != nil {
 		return nil, err
