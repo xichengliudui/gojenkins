@@ -106,81 +106,81 @@ type TestResult struct {
 type BuildResponse struct {
 	Actions   []generalObj
 	Artifacts []struct {
-		DisplayPath  string `json:"displayPath"`
-		FileName     string `json:"fileName"`
-		RelativePath string `json:"relativePath"`
-	} `json:"artifacts"`
-	Building  bool   `json:"building"`
-	BuiltOn   string `json:"builtOn"`
+		DisplayPath  string `json:"displayPath,omitempty"`
+		FileName     string `json:"fileName,omitempty"`
+		RelativePath string `json:"relativePath,omitempty"`
+	} `json:"artifacts,omitempty"`
+	Building  bool   `json:"building,omitempty"`
+	BuiltOn   string `json:"builtOn,omitempty"`
 	ChangeSet struct {
 		Items []struct {
-			AffectedPaths []string `json:"affectedPaths"`
+			AffectedPaths []string `json:"affectedPaths,omitempty"`
 			Author        struct {
-				AbsoluteUrl string `json:"absoluteUrl"`
-				FullName    string `json:"fullName"`
-			} `json:"author"`
-			Comment  string `json:"comment"`
-			CommitID string `json:"commitId"`
-			Date     string `json:"date"`
-			ID       string `json:"id"`
-			Msg      string `json:"msg"`
+				AbsoluteUrl string `json:"absoluteUrl,omitempty"`
+				FullName    string `json:"fullName,omitempty"`
+			} `json:"author,omitempty"`
+			Comment  string `json:"comment,omitempty"`
+			CommitID string `json:"commitId,omitempty"`
+			Date     string `json:"date,omitempty"`
+			ID       string `json:"id,omitempty"`
+			Msg      string `json:"msg,omitempty"`
 			Paths    []struct {
-				EditType string `json:"editType"`
-				File     string `json:"file"`
-			} `json:"paths"`
-			Timestamp int64 `json:"timestamp"`
-		} `json:"items"`
-		Kind      string `json:"kind"`
+				EditType string `json:"editType,omitempty"`
+				File     string `json:"file,omitempty"`
+			} `json:"paths,omitempty"`
+			Timestamp int64 `json:"timestamp,omitempty"`
+		} `json:"items,omitempty"`
+		Kind      string `json:"kind,omitempty"`
 		Revisions []struct {
 			Module   string
 			Revision int
-		} `json:"revision"`
-	} `json:"changeSet"`
+		} `json:"revision",omitempty`
+	} `json:"changeSet",omitempty`
 	ChangeSets []struct {
 		Items []struct {
-			AffectedPaths []string `json:"affectedPaths"`
+			AffectedPaths []string `json:"affectedPaths,omitempty"`
 			Author        struct {
-				AbsoluteUrl string `json:"absoluteUrl"`
-				FullName    string `json:"fullName"`
-			} `json:"author"`
-			Comment  string `json:"comment"`
-			CommitID string `json:"commitId"`
-			Date     string `json:"date"`
-			ID       string `json:"id"`
-			Msg      string `json:"msg"`
+				AbsoluteUrl string `json:"absoluteUrl,omitempty"`
+				FullName    string `json:"fullName,omitempty"`
+			} `json:"author,omitempty"`
+			Comment  string `json:"comment,omitempty"`
+			CommitID string `json:"commitId,omitempty"`
+			Date     string `json:"date,omitempty"`
+			ID       string `json:"id,omitempty"`
+			Msg      string `json:"msg,omitempty"`
 			Paths    []struct {
-				EditType string `json:"editType"`
-				File     string `json:"file"`
-			} `json:"paths"`
-			Timestamp int64 `json:"timestamp"`
-		} `json:"items"`
-		Kind      string `json:"kind"`
+				EditType string `json:"editType,omitempty"`
+				File     string `json:"file,omitempty"`
+			} `json:"paths,omitempty"`
+			Timestamp int64 `json:"timestamp,omitempty"`
+		} `json:"items,omitempty"`
+		Kind      string `json:"kind,omitempty"`
 		Revisions []struct {
 			Module   string
 			Revision int
-		} `json:"revision"`
-	} `json:"changeSets"`
-	Culprits          []Culprit   `json:"culprits"`
-	Description       interface{} `json:"description"`
-	Duration          float64     `json:"duration"`
-	EstimatedDuration float64     `json:"estimatedDuration"`
-	Executor          interface{} `json:"executor"`
-	DisplayName       string      `json:"displayName"`
-	FullDisplayName   string      `json:"fullDisplayName"`
-	ID                string      `json:"id"`
-	KeepLog           bool        `json:"keepLog"`
-	Number            int64       `json:"number"`
-	QueueID           int64       `json:"queueId"`
-	Result            string      `json:"result"`
-	Timestamp         int64       `json:"timestamp"`
-	URL               string      `json:"url"`
-	MavenArtifacts    interface{} `json:"mavenArtifacts"`
-	MavenVersionUsed  string      `json:"mavenVersionUsed"`
+		} `json:"revision,omitempty"`
+	} `json:"changeSets,omitempty"`
+	Culprits          []Culprit   `json:"culprits,omitempty"`
+	Description       interface{} `json:"description,omitempty"`
+	Duration          float64     `json:"duration,omitempty"`
+	EstimatedDuration float64     `json:"estimatedDuration,omitempty"`
+	Executor          interface{} `json:"executor,omitempty"`
+	DisplayName       string      `json:"displayName,omitempty"`
+	FullDisplayName   string      `json:"fullDisplayName,omitempty"`
+	ID                string      `json:"id,omitempty"`
+	KeepLog           bool        `json:"keepLog,omitempty"`
+	Number            int64       `json:"number,omitempty"`
+	QueueID           int64       `json:"queueId,omitempty"`
+	Result            string      `json:"result,omitempty"`
+	Timestamp         int64       `json:"timestamp,omitempty"`
+	URL               string      `json:"url,omitempty"`
+	MavenArtifacts    interface{} `json:"mavenArtifacts,omitempty"`
+	MavenVersionUsed  string      `json:"mavenVersionUsed,omitempty"`
 	FingerPrint       []FingerPrintResponse
 	Runs              []struct {
 		Number int64
 		URL    string
-	} `json:"runs"`
+	} `json:"runs,omitempty"`
 }
 
 type consoleResponse struct {
