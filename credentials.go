@@ -38,7 +38,7 @@ type credentialIDs struct {
 	Credentials []credentialID `json:"credentials"`
 }
 
-type CredentialsImplCertificateCredentialsImpl struct {
+type CertificateCredentialsstruct struct {
 	XMLName        xml.Name `xml:"com.cloudbees.plugins.credentials.impl.CertificateCredentialsImpl"`
 	Text           string   `xml:",chardata"`
 	Plugin         string   `xml:"plugin,attr"`
