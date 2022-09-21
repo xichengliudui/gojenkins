@@ -95,6 +95,7 @@ type SSHCredentials struct {
 	ID               string      `xml:"id"`
 	Scope            string      `xml:"scope"`
 	Username         string      `xml:"username"`
+	UsernameSecret   string      `xml:"usernameSecret"`
 	Description      string      `xml:"description,omitempty"`
 	PrivateKeySource interface{} `xml:"privateKeySource"`
 	Passphrase       string      `xml:"passphrase,omitempty"`
