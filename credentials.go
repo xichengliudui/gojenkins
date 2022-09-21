@@ -28,7 +28,7 @@ var listQuery = map[string]string{
 //ClassUsernameCredentials is name if java class which implements credentials that store username-password pair
 const ClassUsernameCredentials = "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl"
 
-const ClassCertificate = "com.cloudbees.plugins.credentials.CredentialsStoreAction$CredentialsWrapper"
+const ClassCertificate = "com.cloudbees.plugins.credentials.impl.CertificateCredentialsImpl"
 
 type credentialID struct {
 	ID string `json:"id"`
@@ -38,16 +38,25 @@ type credentialIDs struct {
 	Credentials []credentialID `json:"credentials"`
 }
 
-type CredentialsWrapper struct {
-	XMLName     xml.Name `xml:"com.cloudbees.plugins.credentials.CredentialsStoreAction$CredentialsWrapper"`
-	Text        string   `xml:",chardata"`
-	Class       string   `xml:"_class,attr"`
-	Description string   `xml:"description"`
-	DisplayName string   `xml:"displayName"`
-	Fingerprint string   `xml:"fingerprint"`
-	FullName    string   `xml:"fullName"`
-	ID          string   `xml:"id"`
-	TypeName    string   `xml:"typeName"`
+type CredentialsImplCertificateCredentialsImpl struct {
+	XMLName        xml.Name `xml:"com.cloudbees.plugins.credentials.impl.CertificateCredentialsImpl"`
+	Text           string   `xml:",chardata"`
+	Plugin         string   `xml:"plugin,attr"`
+	Scope          string   `xml:"scope"`
+	ID             string   `xml:"id"`
+	Description    string   `xml:"description"`
+	KeyStoreSource struct {
+		Text                  string `xml:",chardata"`
+		Class                 string `xml:"class,attr"`
+		UploadedKeystoreBytes struct {
+			Text           string `xml:",chardata"`
+			SecretRedacted string `xml:"secret-redacted"`
+		} `xml:"uploadedKeystoreBytes"`
+	} `xml:"keyStoreSource"`
+	Password struct {
+		Text           string `xml:",chardata"`
+		SecretRedacted string `xml:"secret-redacted"`
+	} `xml:"password"`
 }
 
 //UsernameCredentials struct representing credential for storing username-password pair
