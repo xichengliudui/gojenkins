@@ -147,6 +147,16 @@ func (cm CredentialsManager) GetSingle(ctx context.Context, domain string, id st
 	return xml.Unmarshal([]byte(str), &creds)
 }
 
+func (cm CredentialsManager) GetSingleXML(ctx context.Context, domain string, id string) (error, string) {
+	str := ""
+	err := cm.handleResponse(cm.J.Requester.Get(ctx, cm.fillURL(configCredentialURL, domain, id), &str, map[string]string{}))
+	if err != nil {
+		return err, ""
+	}
+
+	return nil, str
+}
+
 //Add credential to given domain, creds must be struct which is parsable to xml
 func (cm CredentialsManager) Add(ctx context.Context, domain string, creds interface{}) error {
 	return cm.postCredsXML(ctx, cm.fillURL(createCredentialsURL, domain), creds)
