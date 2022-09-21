@@ -28,12 +28,26 @@ var listQuery = map[string]string{
 //ClassUsernameCredentials is name if java class which implements credentials that store username-password pair
 const ClassUsernameCredentials = "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl"
 
+const ClassCertificate = "com.cloudbees.plugins.credentials.CredentialsStoreAction$CredentialsWrapper"
+
 type credentialID struct {
 	ID string `json:"id"`
 }
 
 type credentialIDs struct {
 	Credentials []credentialID `json:"credentials"`
+}
+
+type CredentialsWrapper struct {
+	XMLName     xml.Name `xml:"com.cloudbees.plugins.credentials.CredentialsStoreAction$CredentialsWrapper"`
+	Text        string   `xml:",chardata"`
+	Class       string   `xml:"_class,attr"`
+	Description string   `xml:"description"`
+	DisplayName string   `xml:"displayName"`
+	Fingerprint string   `xml:"fingerprint"`
+	FullName    string   `xml:"fullName"`
+	ID          string   `xml:"id"`
+	TypeName    string   `xml:"typeName"`
 }
 
 //UsernameCredentials struct representing credential for storing username-password pair
