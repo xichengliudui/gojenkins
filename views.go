@@ -16,6 +16,7 @@ package gojenkins
 
 import (
 	"context"
+	"encoding/xml"
 	"errors"
 	"strconv"
 )
@@ -39,6 +40,40 @@ type ViewResponse struct {
 }
 
 type JenkinsViewType string
+
+type HudsonModelListView struct {
+	XMLName         xml.Name `xml:"hudson.model.ListView"`
+	Text            string   `xml:",chardata"`
+	Name            string   `xml:"name"`
+	Description     string   `xml:"description"`
+	FilterExecutors string   `xml:"filterExecutors"`
+	FilterQueue     string   `xml:"filterQueue"`
+	Properties      struct {
+		Text  string `xml:",chardata"`
+		Class string `xml:"class,attr"`
+	} `xml:"properties"`
+	JobNames struct {
+		Text       string `xml:",chardata"`
+		Comparator struct {
+			Text  string `xml:",chardata"`
+			Class string `xml:"class,attr"`
+		} `xml:"comparator"`
+		String []string `xml:"string"`
+	} `xml:"jobNames"`
+	JobFilters string `xml:"jobFilters"`
+	Columns    struct {
+		Text                          string `xml:",chardata"`
+		HudsonViewsStatusColumn       string `xml:"hudson.views.StatusColumn"`
+		HudsonViewsWeatherColumn      string `xml:"hudson.views.WeatherColumn"`
+		HudsonViewsJobColumn          string `xml:"hudson.views.JobColumn"`
+		HudsonViewsLastSuccessColumn  string `xml:"hudson.views.LastSuccessColumn"`
+		HudsonViewsLastFailureColumn  string `xml:"hudson.views.LastFailureColumn"`
+		HudsonViewsLastDurationColumn string `xml:"hudson.views.LastDurationColumn"`
+		HudsonViewsBuildButtonColumn  string `xml:"hudson.views.BuildButtonColumn"`
+	} `xml:"columns"`
+	IncludeRegex string `xml:"includeRegex"`
+	Recurse      string `xml:"recurse"`
+}
 
 const (
 	LIST_VIEW      JenkinsViewType = "hudson.model.ListView"

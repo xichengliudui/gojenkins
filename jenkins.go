@@ -18,6 +18,7 @@ package gojenkins
 import (
 	"context"
 	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"log"
@@ -552,9 +553,10 @@ func (j *Jenkins) GetAllViews(ctx context.Context) ([]*View, error) {
 	return views, nil
 }
 
-func (j *Jenkins) UpdateViewXML(ctx context.Context, viewName string, config string) *View {
+func (j *Jenkins) UpdateListViewXML(ctx context.Context, viewName string, config *HudsonModelListView) *View {
+	configStr, _ := xml.Marshal(config)
 	view := View{Jenkins: j, Raw: new(ViewResponse), Base: "/view/" + viewName}
-	view.UpdateConfig(ctx, config)
+	view.UpdateConfig(ctx, string(configStr))
 	return &view
 }
 
