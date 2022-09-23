@@ -121,9 +121,7 @@ func (v *View) DeleteJob(ctx context.Context, name string) (bool, error) {
 }
 
 func (v *View) UpdateConfig(ctx context.Context, config string) error {
-
 	var querystring map[string]string
-
 	resp, err := v.Jenkins.Requester.PostXML(ctx, v.Base+"/config.xml", config, nil, querystring)
 	if err != nil {
 		return err
@@ -133,6 +131,15 @@ func (v *View) UpdateConfig(ctx context.Context, config string) error {
 		return nil
 	}
 	return errors.New(strconv.Itoa(resp.StatusCode))
+}
+
+func (v *View) GetConfigXML(ctx context.Context) (string, error) {
+	var data string
+	_, err := v.Jenkins.Requester.GetXML(ctx, v.Base+"/config.xml", &data, nil)
+	if err != nil {
+		return "", err
+	}
+	return data, nil
 }
 
 func (v *View) GetDescription() string {

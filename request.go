@@ -249,7 +249,6 @@ func (r *Requester) Do(ctx context.Context, ar *APIRequest, responseStruct inter
 		}
 
 	}
-
 }
 
 func (r *Requester) ReadRawResponse(response *http.Response, responseStruct interface{}) (*http.Response, error) {
@@ -262,7 +261,7 @@ func (r *Requester) ReadRawResponse(response *http.Response, responseStruct inte
 	if str, ok := responseStruct.(*string); ok {
 		*str = string(content)
 	} else {
-		return nil, fmt.Errorf("Could not cast responseStruct to *string")
+		return nil, fmt.Errorf("Could not cast responseStruct %v to *string\n", responseStruct)
 	}
 
 	return response, nil
