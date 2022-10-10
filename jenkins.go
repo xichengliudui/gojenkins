@@ -433,8 +433,9 @@ func (j *Jenkins) GetAllJobs(ctx context.Context) (jobs []*Job, err error) {
 	wg := sync.WaitGroup{}
 	wg.Add(len(exec.Raw.Jobs))
 	jobs = make([]*Job, len(exec.Raw.Jobs))
-	for index, job := range exec.Raw.Jobs {
+	for index, val := range exec.Raw.Jobs {
 		i := index
+		job := val
 		go func() {
 			defer wg.Done()
 			ji, e := j.GetJob(ctx, job.Name)
