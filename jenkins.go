@@ -555,10 +555,19 @@ func (j *Jenkins) GetAllViews(ctx context.Context) ([]*View, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	wg := sync.WaitGroup{}
+	wg.Add(len(j.Raw.Views))
 	views := make([]*View, len(j.Raw.Views))
-	for i, v := range j.Raw.Views {
-		views[i], _ = j.GetView(ctx, v.Name)
+	for index, val := range j.Raw.Views {
+		i := index
+		v := val
+		go func() {
+			defer wg.Add(-1)
+			views[i], _ = j.GetView(ctx, v.Name)
+		}()
 	}
+	wg.Wait()
 	return views, nil
 }
 
