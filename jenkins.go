@@ -26,6 +26,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -422,22 +423,29 @@ func (j *Jenkins) GetAllJobNames(ctx context.Context) ([]InnerJob, error) {
 
 // Get All Possible Job Objects.
 // Each job will be queried.
-func (j *Jenkins) GetAllJobs(ctx context.Context) ([]*Job, error) {
+func (j *Jenkins) GetAllJobs(ctx context.Context) (jobs []*Job, err error) {
 	exec := Executor{Raw: new(ExecutorResponse), Jenkins: j}
-	_, err := j.Requester.GetJSON(ctx, "/", exec.Raw, nil)
-
+	_, err = j.Requester.GetJSON(ctx, "/", exec.Raw, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	jobs := make([]*Job, len(exec.Raw.Jobs))
-	for i, job := range exec.Raw.Jobs {
-		ji, err := j.GetJob(ctx, job.Name)
-		if err != nil {
-			return nil, err
-		}
-		jobs[i] = ji
+	wg := sync.WaitGroup{}
+	wg.Add(len(exec.Raw.Jobs))
+	jobs = make([]*Job, len(exec.Raw.Jobs))
+	for index, job := range exec.Raw.Jobs {
+		i := index
+		go func() {
+			defer wg.Done()
+			ji, e := j.GetJob(ctx, job.Name)
+			if e != nil {
+				err = e
+				return
+			}
+			jobs[i] = ji
+		}()
 	}
+	wg.Wait()
 	return jobs, nil
 }
 
