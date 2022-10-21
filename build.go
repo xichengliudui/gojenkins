@@ -34,7 +34,7 @@ type Build struct {
 
 type parameter struct {
 	Name  string
-	Value string
+	Value interface{}
 }
 
 type branch struct {
@@ -134,8 +134,8 @@ type BuildResponse struct {
 		Revisions []struct {
 			Module   string
 			Revision int
-		} `json:"revision",omitempty`
-	} `json:"changeSet",omitempty`
+		} `json:"revision,omitempty"`
+	} `json:"changeSet,omitempty"`
 	ChangeSets []struct {
 		Items []struct {
 			AffectedPaths []string `json:"affectedPaths,omitempty"`
