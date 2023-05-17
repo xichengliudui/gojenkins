@@ -395,6 +395,19 @@ func (j *Jenkins) GetAllNodes(ctx context.Context) ([]*Node, error) {
 	return nodes, nil
 }
 
+func (j *Jenkins) GetComputerSet(ctx context.Context) (*Computers, error) {
+	computers := new(Computers)
+	qr := map[string]string{
+		"depth": "2",
+	}
+
+	_, err := j.Requester.GetJSON(ctx, "/computer", computers, qr)
+	if err != nil {
+		return nil, err
+	}
+	return computers, nil
+}
+
 // Get all builds Numbers and URLS for a specific job.
 // There are only build IDs here,
 // To get all the other info of the build use jenkins.GetBuild(job,buildNumber)
