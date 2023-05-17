@@ -378,9 +378,8 @@ func (j *Jenkins) GetFolder(ctx context.Context, id string, parents ...string) (
 
 func (j *Jenkins) GetAllNodes(ctx context.Context) ([]*Node, error) {
 	computers := new(Computers)
-
 	qr := map[string]string{
-		"depth": "1",
+		"depth": "2",
 	}
 
 	_, err := j.Requester.GetJSON(ctx, "/computer", computers, qr)
@@ -516,7 +515,7 @@ func (j *Jenkins) HasPlugin(ctx context.Context, name string) (*Plugin, error) {
 	return p.Contains(name), nil
 }
 
-//InstallPlugin with given version and name
+// InstallPlugin with given version and name
 func (j *Jenkins) InstallPlugin(ctx context.Context, name string, version string) error {
 	xml := fmt.Sprintf(`<jenkins><install plugin="%s@%s" /></jenkins>`, name, version)
 	resp, err := j.Requester.PostXML(ctx, "/pluginManager/installNecessaryPlugins", xml, j.Raw, map[string]string{})
@@ -609,11 +608,13 @@ func (j *Jenkins) UpdateView(ctx context.Context, viewName string, raw *ViewRequ
 // First Parameter - name of the View
 // Second parameter - Type
 // Possible Types:
-// 		gojenkins.LIST_VIEW
-// 		gojenkins.NESTED_VIEW
-// 		gojenkins.MY_VIEW
-// 		gojenkins.DASHBOARD_VIEW
-// 		gojenkins.PIPELINE_VIEW
+//
+//	gojenkins.LIST_VIEW
+//	gojenkins.NESTED_VIEW
+//	gojenkins.MY_VIEW
+//	gojenkins.DASHBOARD_VIEW
+//	gojenkins.PIPELINE_VIEW
+//
 // Example: jenkins.CreateView("newView",gojenkins.LIST_VIEW)
 func (j *Jenkins) CreateView(ctx context.Context, name string, viewType JenkinsViewType, description string) (*View, error) {
 	view := &View{Jenkins: j, Raw: new(ViewResponse), Base: "/view/" + name}
