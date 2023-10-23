@@ -2,6 +2,7 @@ package gojenkins
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -99,6 +100,26 @@ func TestCreateBuilds(t *testing.T) {
 		assert.True(t, (len(builds) > 0))
 
 	}
+}
+
+func TestJenkins_BuildJob(t *testing.T) {
+	ctx := context.Background()
+	jenkins = CreateJenkins(nil, "http://localhost:8080", "admin", "admin")
+	j, err := jenkins.Init(ctx)
+	if err != nil {
+		fmt.Printf("jenkins init failed: %v\n", err)
+		return
+	}
+
+	params := make(map[string]string)
+	params["multiClusterTarget"] = "oasis-dev,oasis-prod"
+	params["skipValidationPod"] = "true"
+	buildId, err := j.BuildJob(ctx, "test-running", params)
+	if err != nil {
+		fmt.Printf("jenkins build job error: %v\n", err)
+		return
+	}
+	fmt.Printf("build success, BuildId = %d\n", buildId)
 }
 
 func TestGetQueueItem(t *testing.T) {

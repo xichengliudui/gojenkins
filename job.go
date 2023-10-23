@@ -450,11 +450,35 @@ func (j *Job) InvokeSimple(ctx context.Context, params map[string]string) (int64
 	if len(parameters) > 0 {
 		endpoint = "/buildWithParameters"
 	}
+
+	// extended choice parameter
+	ecpKey := ""
+	for _, v := range parameters {
+		if v.Type != "PT_CHECKBOX" {
+			continue
+		}
+		ecpKey = v.Name
+		break
+	}
 	data := url.Values{}
 	for k, v := range params {
+		// skip set data
+		if ecpKey != "" && k == ecpKey {
+			continue
+		}
 		data.Set(k, v)
 	}
-	resp, err := j.Jenkins.Requester.Post(ctx, j.Base+endpoint, bytes.NewBufferString(data.Encode()), nil, nil)
+
+	paramsData := data.Encode()
+	ecpValues, ok := params[ecpKey]
+	if ok {
+		evs := strings.Split(ecpValues, ",")
+		for _, val := range evs {
+			v := strings.TrimSpace(val)
+			paramsData = fmt.Sprintf("%s&%s=%s", paramsData, ecpKey, v)
+		}
+	}
+	resp, err := j.Jenkins.Requester.Post(ctx, j.Base+endpoint, bytes.NewBufferString(paramsData), nil, nil)
 	if err != nil {
 		return 0, err
 	}
