@@ -462,10 +462,15 @@ func (j *Jenkins) GetAllJobs(ctx context.Context) (jobs []*Job, err error) {
 	return jobs, nil
 }
 
-// Returns a Queue
-func (j *Jenkins) GetQueue(ctx context.Context) (*Queue, error) {
+// GetQueue Returns a Queue
+func (j *Jenkins) GetQueue(ctx context.Context, fields map[string]string) (*Queue, error) {
 	q := &Queue{Jenkins: j, Raw: new(queueResponse), Base: j.GetQueueUrl()}
-	_, err := q.Poll(ctx)
+	var err error
+	if fields == nil || len(fields) == 0 {
+		_, err = q.Jenkins.Requester.GetJSON(ctx, q.Base, q.Raw, nil)
+	} else {
+		_, err = q.Jenkins.Requester.GetJSON(ctx, q.Base, q.Raw, fields)
+	}
 	if err != nil {
 		return nil, err
 	}
